@@ -1,0 +1,117 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+
+
+<div class="container">
+<div class="row">
+    <div id="block_vitals" class="col-lg-6" style="display:none_;">
+        <div class="card">
+            <div class="card-header"><span class="lang_002">Product information</span></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="vitals" class="table table-hover table-sm noborderattop">
+                        <tbody>
+                            <tr>
+                                <th><span class="lang_003">Product</span></th>
+                                <td><span data-bind="Hostname">{{ product_name }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_003">Hostname</span></th>
+                                <td><span data-bind="Hostname">{{ socket.gethostname() }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_004">Listening IP</span></th>
+                                <td><span data-bind="IPAddr">{{ socket.gethostbyname(socket.gethostname())}}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_005">Kernel Version</span></th>
+                                <td><span data-bind="Kernel">{{ platform.version() }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_006">Distro Name</span></th>
+                                <td><span data-bind="Distro">{{ platform.platform() }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_127">OS Type</span></th>
+                                <td><span data-bind="OS">{{ platform.system() }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_007">Uptime</span></th>
+                                <td><span data-bind="Uptime">{{ uptime }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_095">Last boot</span></th>
+                                <td><span data-bind="LastBoot">{{ datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S") }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_008">Current Users</span></th>
+                                <td><span data-bind="Users">{{ users }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_009">Load Averages</span></th>
+                                <td><span data-bind="LoadAvg">{{ psutil.getloadavg() }}</span></td>
+                            </tr>
+                            <tr>
+                                <th><span class="lang_009">CPU Usage</span></th>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width:{{ cpu_percent | round }}%">{{cpu_percent}}%</div>
+                                      </div>
+                                </td>
+                            </tr>
+                            <tr id="tr_Processes">
+                                <th><span class="lang_110">Running Processes</span></th>
+                                <td><span data-bind="Processes">{{ len(psutil.pids())}} </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="block_memory" class="col-lg-6" style="display:none_;">
+        <div class="card">
+            <div class="card-header"><span class="lang_027">Memory Usage</span></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="memory" class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th><span class="lang_034">Type</span></th>
+                                <th><span class="lang_033">Usage</span></th>
+                                <th class="rightCell"><span class="lang_125">Free</span></th>
+                                <th class="rightCell"><span class="lang_036">Used</span></th>
+                                <th class="rightCell"><span class="lang_037">Size</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="memory-data">
+                            <tr>
+                                <th><span data-bind="Type">Virtual Memory</span></th>
+                                <td><span data-bind="Usage">{{ '%.2f' % (memory.used/memory.total*100) }}%</span></td>
+                                <td class="rightCell"><span data-bind="Free">{{ '%.2f' % (memory.free/memory.total*100) }}%</span></td>
+                                <td class="rightCell"><span data-bind="Used">{{ '%.2f' % (memory.used/1024/1024) }}MB </span></td>
+                                <td class="rightCell"><span data-bind="Total">{{ '%.2f' % (memory.total/1024/1024) }}MB</span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot id="swap-data" style="display:none_;">
+                            <tr>
+                                <th><span data-bind="Name"></span></th>
+                                <td><span data-bind="Usage"></span></td>
+                                <td class="rightCell"><span data-bind="Free"></span></td>
+                                <td class="rightCell"><span data-bind="Used"></span></td>
+                                <td class="rightCell"><span data-bind="Total"></span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
