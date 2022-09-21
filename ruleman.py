@@ -11,6 +11,13 @@ time_end = [] # ['22:22', '11:37']
 exe_list = [] # ['notepad.exe']
 hosts_path = "C:\Windows\System32\drivers\etc\hosts"
 
+
+# theo dang 127.0.0.1 facebook.com www.facebook.com thi moi block dc
+#restart lai browser de bat dau block
+
+
+
+
 redirect = "127.0.0.1"
 website_list = [] # ["www.facebook.com","facebook.com",
       # "dub119.mail.live.com","www.dub119.mail.live.com",
