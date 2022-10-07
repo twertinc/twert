@@ -1,4 +1,9 @@
 import webbrowser
+import os
+import sys
+
+
+
 from infi.systray import SysTrayIcon
 
 
@@ -40,7 +45,16 @@ menu_options = (
     ("Time Rules", None, timeRules),
     ("About", None, about),
 )
-systray = SysTrayIcon("icon.ico", "Twert 0.1", menu_options)
+
+icon_path = ""
+if getattr(sys, 'frozen', False):
+    icon_path = os.path.join(sys._MEIPASS, 'favicon.ico')
+else:
+    icon_path = 'favicon.ico'
+
+
+
+systray = SysTrayIcon(icon_path, "Twert", menu_options)
 
 
 systray.start()
