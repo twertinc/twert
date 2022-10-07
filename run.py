@@ -128,53 +128,53 @@ def update_process_list(dbsession):
 
   dbsession.commit()
 
-def rules_push_to_manager(model):
-    global db
+# def rules_push_to_manager(model):
+#     global db
 
-    # fetch time rules
-    ret = db.session.execute("SELECT  strftime('%H:%M',from_time),strftime('%H:%M',to_time) FROM time_rules")
-    rows = ret.fetchall()
-    print(rows)
+#     # fetch time rules
+#     ret = db.session.execute("SELECT  strftime('%H:%M',from_time),strftime('%H:%M',to_time) FROM time_rules")
+#     rows = ret.fetchall()
+#     print(rows)
 
-    time_starts = []
-    time_ends = []
+#     time_starts = []
+#     time_ends = []
 
-    for row in rows:
-      # print(type(row),type(row[0]))
-      time_start = row[0]
-      time_end = row[1]
-      time_starts.append(time_start)
-      time_ends.append(time_end)
+#     for row in rows:
+#       # print(type(row),type(row[0]))
+#       time_start = row[0]
+#       time_end = row[1]
+#       time_starts.append(time_start)
+#       time_ends.append(time_end)
    
-    # fetch process rules
-    process_names = []
+#     # fetch process rules
+#     process_names = []
 
-    ret = db.session.execute("SELECT  exe_name FROM process_rules WHERE is_blocked=TRUE")
-    rows = ret.fetchall()
-    print(rows)
-    for row in rows:
-      process_names.append(row[0])
+#     ret = db.session.execute("SELECT  exe_name FROM process_rules WHERE is_blocked=TRUE")
+#     rows = ret.fetchall()
+#     print(rows)
+#     for row in rows:
+#       process_names.append(row[0])
     
-    # fetch domain rules
-    domain_names = []
-    ret = db.session.execute("SELECT  domain FROM domain_rules WHERE is_blocked=TRUE")
-    rows = ret.fetchall()
-    print(rows)
-    for row in rows:
-      domain_names.append(row[0])
+#     # fetch domain rules
+#     domain_names = []
+#     ret = db.session.execute("SELECT  domain FROM domain_rules WHERE is_blocked=TRUE")
+#     rows = ret.fetchall()
+#     print(rows)
+#     for row in rows:
+#       domain_names.append(row[0])
     
 
-    ruleman.update_rules(time_starts,time_ends,process_names, domain_names)
+#     ruleman.update_rules(time_starts,time_ends,process_names, domain_names)
    
 
 def rules_changed(form,model,is_created):
     print("Rule changed ",form,model,is_created)
-    rules_push_to_manager(model)
+    #rules_push_to_manager(model)
     pass
 
 def rules_deleted(model):
     print("Rule deleted ",model)
-    rules_push_to_manager(model)
+    #rules_push_to_manager(model)
     pass
 	
 def main():
