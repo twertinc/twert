@@ -114,31 +114,67 @@ def webblock():
     website_list = []
 
     for row in domain_rules_rows:
-        website_list.append(row[0])
+        domain_name = row[0]
+        if 'www.' in domain_name:
+            st = domain_name.find('www.')
+            if domain_name.find('/', st + 4) != -1:
+                domain_name = domain_name[:domain_name.find('/', st + 4)]
+            website_list.append(domain_name[st + 4 : ])
+            website_list.append(domain_name[st :])
+        else:
+            if 'http:' in domain_name:
+                st = 7
+                if domain_name.find('/', st) != -1:
+                    domain_name = domain_name[: domain_name.find('/', st) ]
+                website_list.append(domain_name[st:])
+                website_list.append('www.' + domain_name[st:])
+            elif 'https:' in domain_name:
+                st = 8
+                if domain_name.find('/', st) != -1:
+                    domain_name = domain_name[:domain_name.find('/', st) ]
+                website_list.append(domain_name[st:])
+                website_list.append('www.' + domain_name[st:])
+            else:
+                if domain_name.find('/') != -1:
+                    domain_name = domain_name[:domain_name.find('/')]
+                website_list.append(domain_name)
+                website_list.append('www.' + domain_name)
+
+
+        #website_list.append(row[0])
     db.commit()
     db.close()
 
 
     if checktime("web"):
         with open(hosts_path, 'r+') as file:
-            content = file.read()
+            content=file.readlines()
+            file.seek(0)
+            for line in content:
+                if not (redirect in line):
+                    file.write(line)
+
+            # removing hostnmes from host file
+            file.truncate()
             for website in website_list:
                 if website in content:
                     pass
                 else:
                     # mapping hostnames to your localhost IP address
                     file.write(redirect + " " + website + "\n")
+        print(website_list)
         print('bruh')
     else:
         with open(hosts_path, 'r+') as file:
             content=file.readlines()
             file.seek(0)
             for line in content:
-                if not any(website in line for website in website_list):
+                if not (redirect in line):
                     file.write(line)
 
             # removing hostnmes from host file
             file.truncate()
+        
         print('fun')
 
 def thread_run(id):
