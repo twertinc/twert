@@ -32,6 +32,11 @@
 !insertmacro MUI_LANGUAGE "English"
 
 ; MUI end ------
+!macro CreateInternetShortcut FILEPATH URL
+WriteINIStr "${FILEPATH}" "InternetShortcut" "URL" "${URL}"
+!macroend
+
+
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "twertSetup.exe"
@@ -45,9 +50,11 @@ Section "MainSection" SEC01
   SetOverwrite try
   File "twertexe\nblocker.sqlite3"
   File "twertexe\nssm.exe"
+
   CreateDirectory "$SMPROGRAMS\Twert"
-  CreateShortCut "$SMPROGRAMS\Twert\Twert.lnk" "$INSTDIR\nssm.exe"
-  CreateShortCut "$DESKTOP\Twert.lnk" "$INSTDIR\nssm.exe"
+  !insertmacro CreateInternetShortcut "$SMPROGRAMS\Twert\Twert.URL" "http://127.0.0.1:5000/admin/"
+  !insertmacro CreateInternetShortcut "$DESKTOP\Twert.URL" "http://127.0.0.1:5000/admin/"
+
   SetOutPath "$INSTDIR\Prerequisites"
   File "twertexe\Prerequisites\npcap-1.71.exe"
   SetOutPath "$INSTDIR"
@@ -59,7 +66,7 @@ Section "MainSection" SEC01
   File "twertexe\snifferStopService.bat"
   File "twertexe\tray.exe"
   File "twertexe\trayStopExe.bat"
-  
+
   ExecWait '"$INSTDIR\Prerequisites\npcap-1.71.exe"'
   ExecWait '"$INSTDIR\snifferStartService.bat"'
   ExecWait '"$INSTDIR\runStartService.bat"'
@@ -116,8 +123,8 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\Twert\Uninstall.lnk"
   Delete "$SMPROGRAMS\Twert\Website.lnk"
-  Delete "$DESKTOP\Twert.lnk"
-  Delete "$SMPROGRAMS\Twert\Twert.lnk"
+  Delete "$DESKTOP\Twert.URL"
+  Delete "$SMPROGRAMS\Twert\Twert.URL"
 
   RMDir "$SMPROGRAMS\Twert"
   RMDir "$INSTDIR\Prerequisites"
