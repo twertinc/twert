@@ -37,9 +37,6 @@ print('database_path', database_path)
 
 bruh = application_path + ' '+database_path
 
-logging.basicConfig(filename=r'C:\Users\Nam Anh\Documents\log.txt', encoding='utf-8', level=logging.DEBUG)
-logging.debug(bruh)
-
 
 sp.prefer_gpu()
 #anconda prompt ko run as adminstrator and copy paste this:python -m spacy download en
