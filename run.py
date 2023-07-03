@@ -14,7 +14,7 @@ import datetime
 import os
 import sys
 from Classify import Classify
-
+import history
 
 def resource_path( relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -258,4 +258,5 @@ if __name__ == '__main__':
     print("Starting RuleManager ...")
     ruleman.start_thread()
     Classify.start_thread()
+    history.start_thread()
     main()
