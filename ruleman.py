@@ -195,3 +195,11 @@ def start_thread():
     rThread = threading.Thread(target=thread_run,args=(1,),daemon=True)
     rThread.start()
     pass
+
+# block websites using dns server in python
+# https://www.thepythoncode.com/article/block-access-to-certain-websites-in-python
+# https://www.thepythoncode.com/article/make-a-subdomain-scanner-in-python
+
+
+
+

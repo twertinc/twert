@@ -7,14 +7,14 @@ import threading
 def parse_domain(domain: str):
     return urlparse(domain).netloc
 
-# start_time = time.time()
+start_time = time.time()
 
-# history = browser_history.get_history()
+history = browser_history.get_history()
 
-# for num, entry in enumerate(history.histories):
-#     print("{}. time:{} , domain:{} ".format(num, entry[0], parse_domain(entry[1])))
+for num, entry in enumerate(history.histories):
+    print("{}. time:{} , domain:{} ".format(num, entry[0], parse_domain(entry[1])))
 
-# print("time to print history: {}".format(time.time() - start_time))
+print("time to print history: {}".format(time.time() - start_time))
 
 database_path = "nblocker.sqlite3"
 
@@ -42,13 +42,14 @@ def add_all_history(conn, history_list: list):
         domain = parse_domain(entry[1])
         timestamp = entry[0]
 
-        sql = """INSERT INTO domains (domain,hit_count,first_seen,last_seen)
-                VALUES (?,1,?,?) 
+        sql = """INSERT INTO domains (domain,hit_count,first_seen,last_seen, browser)
+                VALUES (?,1,?,?,?) 
                 ON CONFLICT (domain) 
                 DO UPDATE SET hit_count=hit_count+1, last_seen=?"""
         cursor = conn.cursor()
-        cursor.execute(sql, (domain, timestamp, timestamp, timestamp))
+        cursor.execute(sql, (domain, timestamp, timestamp,'TRUE', timestamp))
         conn.commit()
+
 def add_all_history_one_min_interval(conn, history_list : list):
     time.sleep(60)
     history_list_future = browser_history.get_history().histories
@@ -57,19 +58,22 @@ def add_all_history_one_min_interval(conn, history_list : list):
         domain = parse_domain(entry[1])
         timestamp = entry[0]
 
-        sql = """INSERT INTO domains (domain,hit_count,first_seen,last_seen)
-                VALUES (?,1,?,?) 
+        sql = """INSERT INTO domains (domain,hit_count,first_seen,last_seen, browser)
+                VALUES (?,1,?,?, ?) 
                 ON CONFLICT (domain) 
-                DO UPDATE SET hit_count=hit_count+1, last_seen=?"""
+                DO UPDATE SET hit_count=hit_count+1, last_seen=?
+                """
         cursor = conn.cursor()
-        cursor.execute(sql, (domain, timestamp, timestamp, timestamp))
+        cursor.execute(sql, (domain, timestamp, timestamp, 'TRUE', timestamp ))
         conn.commit()
+    return history_list_future
 
 
 def thread_run():
     conn = create_connection(database_path)
+    current_history = browser_history.get_history().histories
     while True:
-        add_all_history_one_min_interval(conn, browser_history.get_history().histories)
+        current_history = add_all_history_one_min_interval(conn, current_history)
 
 def start_thread():
     rThread = threading.Thread(target=thread_run,daemon=True)
