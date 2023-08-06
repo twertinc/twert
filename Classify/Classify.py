@@ -13,7 +13,7 @@ from requests.models import MissingSchema
 import threading
 import os
 import sys
-import logging 
+# import logging 
 from pathlib import Path
 import sklearn.calibration
 

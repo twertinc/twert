@@ -31,7 +31,7 @@ def resource_path( relative_path):
 # https://flask-admin.readthedocs.io/en/latest/api/mod_model/
 
 db = None
-product_name = "Twert version 0.1 Beta"
+product_name = "Twert version 0.2 Beta"
 
 class AnalyticsView(AdminIndexView):
     @expose('/')

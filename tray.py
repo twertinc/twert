@@ -1,12 +1,27 @@
 import webbrowser
 import os
 import sys
-
+import sqlite3
 
 
 from infi.systray import SysTrayIcon
 
 
+database_path = 'nblocker.sqlite3'
+
+try:
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    current_user = os.path.expanduser('~')
+
+    cursor.execute("delete from current_user")
+    cursor.execute("insert into current_user (username) values ('{}')".format( current_user))
+
+    conn.commit()
+    conn.close()
+except Exception as e:
+    print(e)
 def dashboard(systray):
     url = 'http://127.0.0.1:5000/admin/'
     webbrowser.open_new(url)
