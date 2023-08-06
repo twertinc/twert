@@ -55,26 +55,26 @@ Section "MainSection" SEC01
   !insertmacro CreateInternetShortcut "$SMPROGRAMS\Twert\Twert.URL" "http://127.0.0.1:5000/admin/"
   !insertmacro CreateInternetShortcut "$DESKTOP\Twert.URL" "http://127.0.0.1:5000/admin/"
 
-  SetOutPath "$INSTDIR\Prerequisites"
-  File "Prerequisites\npcap-1.71.exe"
+#  SetOutPath "$INSTDIR\Prerequisites"
+#  File "Prerequisites\npcap-1.71.exe"
   SetOutPath "$INSTDIR"
-  File "run.exe"
+  File "dist\tray.exe"
+  Exec '"$INSTDIR\tray.exe"'
+  File "dist\run.exe"
   File "runStartService.bat"
   File "runStopService.bat"
-  File "sniffer.exe"
-  File "snifferStartService.bat"
-  File "snifferStopService.bat"
-  File "tray.exe"
+#  File "sniffer.exe"
+#  File "snifferStartService.bat"
+#  File "snifferStopService.bat"
   File "trayStopExe.bat"
   File "Classify\df.pkl"
   File "Classify\fitted_vectorizer.pkl"
   File "Classify\id_to_category.pkl"
   File "Classify\urlClassificationModel.pkl"
-  ExecWait '"$INSTDIR\Prerequisites\npcap-1.71.exe"'
-  ExecWait '"$INSTDIR\snifferStartService.bat"'
+#  ExecWait '"$INSTDIR\Prerequisites\npcap-1.71.exe"'
+#  ExecWait '"$INSTDIR\snifferStartService.bat"'
   ExecWait '"$INSTDIR\runStartService.bat"'
   CreateShortCut "$SMPROGRAMS\Startup\tray.lnk" "$INSTDIR\tray.exe"
-  Exec '"$INSTDIR\tray.exe"'
 SectionEnd
 
 Section -AdditionalIcons
@@ -107,20 +107,20 @@ FunctionEnd
 
 Section Uninstall
   ExecWait '"$INSTDIR\trayStopExe.bat"'
-  ExecWait '"$INSTDIR\snifferStopService.bat"'
+;  ExecWait '"$INSTDIR\snifferStopService.bat"'
   ExecWait '"$INSTDIR\runStopService.bat"'
   Delete "$SMPROGRAMS\Startup\tray.lnk"
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\trayStopExe.bat"
   Delete "$INSTDIR\tray.exe"
-  Delete "$INSTDIR\snifferStopService.bat"
-  Delete "$INSTDIR\snifferStartService.bat"
-  Delete "$INSTDIR\sniffer.exe"
+;  Delete "$INSTDIR\snifferStopService.bat"
+;  Delete "$INSTDIR\snifferStartService.bat"
+;  Delete "$INSTDIR\sniffer.exe"
   Delete "$INSTDIR\runStopService.bat"
   Delete "$INSTDIR\runStartService.bat"
   Delete "$INSTDIR\run.exe"
-  Delete "$INSTDIR\Prerequisites\npcap-1.71.exe"
+;  Delete "$INSTDIR\Prerequisites\npcap-1.71.exe"
   Delete "$INSTDIR\nssm.exe"
   Delete "$INSTDIR\nblocker.sqlite3"
   Delete "$INSTDIR\df.pkl"
@@ -134,7 +134,7 @@ Section Uninstall
   Delete "$SMPROGRAMS\Twert\Twert.URL"
 
   RMDir "$SMPROGRAMS\Twert"
-  RMDir "$INSTDIR\Prerequisites"
+;  RMDir "$INSTDIR\Prerequisites"
   RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
