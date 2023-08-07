@@ -95,12 +95,12 @@ def psutil_blockexe(): #block từ time_start -> time_end (2 cái này là strin
     exe_list = []
 
     for row in process_rules_rows:
-        exe_list.append(row[0])
+        exe_list.append(row[0].lower())
     db.commit()
     db.close()
     if checktime("exe"):
         for proc in psutil.process_iter():
-            if proc.name() in exe_list:
+            if proc.name().lower() in exe_list:
                 proc.kill()
     else:
         # print("psutil_blockexe checktime() not yet")
