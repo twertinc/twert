@@ -1,0 +1,10 @@
+*__pycache__/
+build/
+dist/
+env/
+logs/
+twertexe/
+twertexetest/
+/run.exe
+twertSetup.exe
+tray.exe
