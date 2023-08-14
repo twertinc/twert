@@ -31,7 +31,7 @@ def resource_path( relative_path):
 # https://flask-admin.readthedocs.io/en/latest/api/mod_model/
 
 db = None
-product_name = "Twert version 0.2 Beta"
+product_name = "Twert version 0.1.1 Beta"
 
 class AnalyticsView(AdminIndexView):
     @expose('/')
@@ -77,7 +77,7 @@ ORDER BY
       
         # top 10 domains
         # select domain,hit_count from domains  where last_seen>datetime('now','-7 days') order by hit_count desc limit 10
-        ret = db.session.execute("select domain,hit_count,LENGTH(domain) - LENGTH([REPLACE](domain, '.', '') ) AS dot_count from domains  where last_seen>datetime('now','-7 days') and dot_count=1 order by hit_count desc limit 5")
+        ret = db.session.execute("select domain,hit_count from domains order by hit_count desc limit 5")
         rows = ret.fetchall()
         # top5_domains = [o[0] for o in rows]
         # top5_hits = [o[1] for o in rows]
